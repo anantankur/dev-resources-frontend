@@ -25,11 +25,8 @@ const About = ({ data }) => {
             <div className="row mx-5">
                 {
                     Object.keys(data).map((user, i) => {
-                        console.log(data[user])
                         return (
-
-
-                            <div className="col-md-3 p-3" >
+                            <div className="col-md-3 p-3" key={i} >
                                 <div className="card cardRes">
                                     <img className="card-img-top img-respsonsive" src={data[user].avatar} alt={data[user].name} />
                                     <div className="card-body ">
@@ -39,7 +36,7 @@ const About = ({ data }) => {
                                     <div className="card-footer text-muted">
                                         <div className="row">
                                             <div className="col-md-6 text-left tooltip1">
-                                                <div class="tooltiptext">
+                                                <div className="tooltiptext">
                                                     <h4>Frontend Contribution</h4>
                                                     <p>Additions: {data[user].frontend.a}</p>
                                                     <p>Deletions: {data[user].frontend.d}</p>
@@ -48,7 +45,7 @@ const About = ({ data }) => {
                                                 <i className="fas fa-globe-americas"></i> {data[user].frontend.c}
                                             </div>
                                             <div className="col-md-6 text-right tooltip1">
-                                            <div class="tooltiptext text-center">
+                                            <div className="tooltiptext text-center">
                                                     <h4>Backend Contribution</h4>
                                                     <p>Additions: {data[user].backend.a}</p>
                                                     <p>Deletions: {data[user].backend.d}</p>
