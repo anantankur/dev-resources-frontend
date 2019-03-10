@@ -28,6 +28,63 @@
     margin-left: -23px;
   }
   
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #474747; 
+}
+
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--orange);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #856404; 
+}
+
+.tooltip1 {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip1 .tooltiptext {
+  visibility: hidden;
+  /* width: 200%; */
+  background-color: rgba(0, 0, 0, 0.863);
+  /* color: #fff; */
+  text-align: center;
+  /* padding: 5px 0; */
+  border-radius: 6px;
+  position: absolute;
+  top: -1300%;
+  left: 0;
+  z-index: 1;
+  display: block
+}
+
+.tooltiptext h4{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: var(--orange);
+    font-size: larger;
+}
+
+.tooltiptext p {
+  color: #fff
+}
+
+.tooltip1:hover .tooltiptext {
+  visibility: visible;
+}
+
 body {
     margin: 0px;
     margin-left: 60px;

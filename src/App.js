@@ -45,19 +45,7 @@ class App extends Component {
   contribs = async () => {
     await fetch(`${this.state.backendBaseURL}/contributors`)
       .then(response => response.json())
-      .then(async (data) => {
-        let contributions = [];
-        await data.front.forEach(c => {
-          contributions[c.login] = { name: c.login, avatar: c.avatar_url, fContribs: c.contributions, url: c.html_url }
-        });
-
-        await data.back.forEach(c => {
-          if (contributions[c.login]) contributions[c.login]["bContribs"] = c.contributions;
-          else contributions[c.login] = { name: c.login, avatar: c.avatar_url, bContribs: c.contributions, url: c.html_url }
-        })
-
-        return contributions
-      }).then(abx => this.setState({contribs: abx}))
+      .then(contribs => this.setState({contribs: contribs}))
   }
 
   componentDidUpdate() {
