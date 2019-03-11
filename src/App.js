@@ -38,7 +38,7 @@ class App extends Component {
 
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
-      .then(resourceData => { this.setState({ resources: resourceData }) });
+      .then(resourceData => { this.setState({ resources: resourceData.payload.resources }) });
     this.routeHandler()
 
     this.contribs()
