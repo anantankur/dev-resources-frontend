@@ -6,16 +6,15 @@ import Home from './containers/home';
 import User from './containers/user';
 import Dashboard from './containers/dashboard';
 import NotFound from './containers/404';
-import './App.css'
+import './App.css';
 import About from './containers/about';
 
 // Listens for URL Changes
 const history = createBrowserHistory();
 
 class App extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       resources: [],
       route: ``,
@@ -25,110 +24,127 @@ class App extends Component {
       backendBaseURL: 'https://dev-resources.herokuapp.com',
       frontendBaseURL: window.location.hostname,
       userId: 179604866807627777,
-      contribs: []
-    }
+      contribs: [],
+      selectedResource: {},
+      path: ''
+    };
   }
 
   componentDidMount() {
-    if (localStorage.getItem("display") === null) this.setState({ display: "tableview" })
-    else this.setState({ display: localStorage.getItem("display") })
+    if (localStorage.getItem('display') === null)
+      this.setState({ display: 'tableview' });
+    else this.setState({ display: localStorage.getItem('display') });
 
-    if(localStorage.getItem('hoken')) this.setState({isSignedIn: true})
-    else this.setState({isSignedIn: false})
+    if (localStorage.getItem('hoken')) this.setState({ isSignedIn: true });
+    else this.setState({ isSignedIn: false });
 
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
-      .then(resourceData => { this.setState({ resources: resourceData.payload.resources }) });
-    this.routeHandler()
+      .then(resourceData => {
+        this.setState({ resources: resourceData.payload.resources });
+      });
+    this.routeHandler();
 
-    this.contribs()
-
+    this.contribs();
   }
 
   contribs = async () => {
     await fetch(`${this.state.backendBaseURL}/contributors`)
       .then(response => response.json())
-      .then(contribs => this.setState({contribs: contribs}))
-  }
+      .then(contribs => this.setState({ contribs: contribs }));
+  };
 
   componentDidUpdate() {
     history.listen((location, action) => {
-      this.routeHandler()
+      this.routeHandler();
     });
   }
 
-  tokenUpdater = (key) => {
-      this.setState({hoken: key})
-  }
+  tokenUpdater = key => {
+    this.setState({ hoken: key });
+  };
 
-  signer = (a) => { // true or false
-      if (!a) {
-          localStorage.removeItem('hoken');
-      }
-      this.setState({isSignedIn: a});
-  }
+  signer = a => {
+    // true or false
+    if (!a) {
+      localStorage.removeItem('hoken');
+    }
+    this.setState({ isSignedIn: a });
+  };
 
-  changeDisplayType = (opt) => {
-    this.setState({ display: opt })
-    localStorage.setItem("display", opt);
-  }
+  changeDisplayType = opt => {
+    this.setState({ display: opt });
+    localStorage.setItem('display', opt);
+  };
 
   routeHandler = () => {
-    const sections = window.location.pathname.slice(1).split("/")
-    this.setState({ route: sections[0], path: sections[1] })
-  }
+    const sections = window.location.pathname.slice(1).split('/');
+    this.setState({ route: sections[0], path: sections[1] });
+  };
 
-  updateUpvotes = (a) => {
+  onClick = (slug, index) => {
+    this.setState({ selectedResource: this.state.resources[index] });
+    this.changeRoute(`/resource/${slug}`);
+  };
+
+  updateUpvotes = a => {
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
-      .then(resourceData => { this.setState({ resources: resourceData }) });
-  }
+      .then(resourceData => {
+        this.setState({ resources: resourceData });
+      });
+  };
 
   displayRoute = () => {
-
     const routes = [
       {
-        path: "",
-        container:
+        path: '',
+        container: (
           <Home
             resources={this.state.resources}
-            onClick={(slug) => this.changeRoute(`/resource/${slug}`)}
+            onClick={(slug, index) => this.onClick(slug, index)}
             display={this.state.display}
-            changeDisplay={(opt) => this.changeDisplayType(opt)}
+            changeDisplay={opt => this.changeDisplayType(opt)}
             userId={this.state.userId}
-            updateVotes={(a) => this.updateUpvotes(a)}
+            updateVotes={a => this.updateUpvotes(a)}
           />
+        )
       },
       {
-        path: "resource",
-        container: <Resource res={this.state.resources} id={this.state.path} />
+        path: 'resource',
+        container: <Resource res={this.state.selectedResource} />
       },
       {
-        path: "user",
+        path: 'user',
         container: <User />
       },
       {
-        path: "about",
+        path: 'about',
         container: <About data={this.state.contribs} />
       },
       {
-        path: "dashboard",
-        container: <Dashboard tokenUpdater={this.tokenUpdater} signer={this.signer} isSignedIn={this.state.isSignedIn}/>
+        path: 'dashboard',
+        container: (
+          <Dashboard
+            tokenUpdater={this.tokenUpdater}
+            signer={this.signer}
+            isSignedIn={this.state.isSignedIn}
+          />
+        )
       }
-    ]
-    let matchedRoute = routes.find(route => route.path === this.state.route)
-    return matchedRoute ? matchedRoute.container : <NotFound />
+    ];
+    let matchedRoute = routes.find(route => route.path === this.state.route);
+    return matchedRoute ? matchedRoute.container : <NotFound />;
+  };
 
-  }
-
-  changeRoute = (r) => {
-    history.push(r)
-  }
+  changeRoute = r => {
+    history.push(r);
+  };
 
   render() {
     return (
       <div className="App">
-        <MainSidebar changeRoute={(r) => this.changeRoute(r)}/>
+        <MainSidebar changeRoute={r => this.changeRoute(r)} />
         {this.displayRoute()}
       </div>
     );
