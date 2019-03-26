@@ -66,6 +66,7 @@ class App extends Component {
 
   signer = a => {
     // true or false
+    //test change
     if (!a) {
       localStorage.removeItem('hoken');
     }
