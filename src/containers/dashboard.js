@@ -54,7 +54,10 @@ class Dashboard extends Component {
                                 <p className="text-white text-center">This page will eventually contain your favourite/bookmarked resources and various user options, if you logged in by authenticating with Discord</p>
                                 {
                                     this.state.profile.username === undefined
-                                        ?   <h1 className="text-white text-center">Loading ...</h1>
+                                        ?   <div>
+                                                <h1 className="text-white text-center">Loading ...</h1>
+                                                <button type="button" className="btn btn-outline-warning" onClick={() => signer(false)}>Logout</button>
+                                            </div>
                                         :   <div>
                                                 <h1 className="text-white text-center">{username+'#'+discriminator}</h1>
                                                 <button type="button" className="btn btn-outline-warning" onClick={() => signer(false)}>Logout</button>
@@ -62,6 +65,7 @@ class Dashboard extends Component {
                                                 <img className="text-center" src={`https://cdn.discordapp.com/avatars/${id}/${avatar}.png`} alt="avatar" />
                                             </div>
                                 }
+
                             </div>
                         :   <div className="text-center">
                                 <h1 className="text-white text-center mt-3">User Page</h1>
