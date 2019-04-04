@@ -21,7 +21,7 @@ class App extends Component {
       hoken: ``,
       isSignedIn: false,
       display: `masonry`,
-      backendBaseURL: 'https://dev-resources.herokuapp.com/',
+      backendBaseURL: 'https://dev-resources.herokuapp.com',
       frontendBaseURL: window.location.hostname,
       userId: 179604866807627777,
       contribs: [],
@@ -69,10 +69,6 @@ class App extends Component {
       localStorage.removeItem('hoken');
     }
     this.setState({ isSignedIn: a });
-  };
-
-  login = () => {
-      console.log(localStorage.getItem("hoken"));
   };
 
   changeDisplayType = opt => {

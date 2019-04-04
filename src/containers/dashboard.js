@@ -22,7 +22,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
 
-        fetch('https://rustyresources.herokuapp.com/profile', {
+        fetch('https://dev-resources.herokuapp.com/profile', {
               method: 'post',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
