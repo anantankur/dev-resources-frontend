@@ -3,12 +3,13 @@ import MasonCards from '../components/cards/masonCards';
 import LayoutOptions from '../components/layoutOptions/layoutOptions';
 import ListCards from '../components/cards/listCards';
 
+const user = JSON.parse(localStorage.getItem('profile'));
+
 const Home = ({
   resources,
   onClick,
   display,
   changeDisplay,
-  userId,
   updateVotes
 }) => {
   const cardView = {
@@ -18,7 +19,7 @@ const Home = ({
 
   const submitUpvote = slug => {
     fetch(
-      `https://dev-resources.herokuapp.com/resource/${slug}/${userId}/upvote`,
+      `https://dev-resources.herokuapp.com/${slug}/${user.id}/upvote`,
       {
         method: 'post'
       }
@@ -30,7 +31,7 @@ const Home = ({
   };
 
   const hasVoted = upArry => {
-    if (upArry.includes('179604866807627780')) return true;
+    if (upArry.includes(user.id)) return true;
     else return false;
   };
 
@@ -46,6 +47,7 @@ const Home = ({
         Displaying: {Object.keys(resources).length} Resources
       </p>
       <div className={cardView[display]}>
+      {console.log(resources)}
         {resources.map((res, i) => {
           if (display === 'tableview')
             return (
@@ -55,7 +57,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, userId)}
+                hasVoted={hasVoted(res.upvotes, user.id)}
               />
             );
           else
@@ -66,7 +68,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, userId)}
+                hasVoted={hasVoted(res.upvotes, user.id)}
               />
             );
         })}

@@ -8,7 +8,7 @@ if(key == null) {
     console.log('null');
 } else {
     localStorage.setItem("hoken", key);
-    localStorage.setItem("uid", uid)
+    localStorage.setItem("uid", uid);
     window.location.href = "https://rustyresources.herokuapp.com/dashboard"
 }
 
@@ -22,22 +22,25 @@ class Dashboard extends Component {
 
     componentDidMount() {
 
-        fetch('https://dev-resources.herokuapp.com/profile', {
-              method: 'post',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({
-                hoken: localStorage.getItem("hoken"),
-                uid: localStorage.getItem("uid")
-              })
-            })
-              .then(response => response.json())
-              .then(user => {
-                if (user.payload.id) {
-                    console.log(user.payload);
-                    this.props.signer(true);
-                    this.setState({profile: user.payload});
-                }
-              })
+        if (this.props.isSignedIn) {
+            fetch('https://dev-resources.herokuapp.com/profile', {
+                  method: 'post',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                    hoken: localStorage.getItem("hoken"),
+                    uid: localStorage.getItem("uid")
+                  })
+                })
+                  .then(response => response.json())
+                  .then(user => {
+                    if (user.payload.id) {
+                        console.log(user.payload);
+                        this.props.signer(true);
+                        this.setState({profile: user.payload});
+                        localStorage.setItem('profile', JSON.stringify(user.payload));
+                    }
+                  })
+        }
     }
 
     render() {
