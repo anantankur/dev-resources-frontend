@@ -19,7 +19,7 @@ const Home = ({
 
   const submitUpvote = slug => {
     fetch(
-      `https://dev-resources.herokuapp.com/${slug}/${user.id}/upvote`,
+      `https://dev-resources.herokuapp.com/resource/${slug}/${user.id}/upvote`,
       {
         method: 'post'
       }
