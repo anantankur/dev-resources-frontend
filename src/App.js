@@ -17,13 +17,13 @@ class App extends Component {
     super(props);
     this.state = {
       resources: [],
-      route: ``,
-      hoken: ``,
+      route: '',
+      hoken: '',
       isSignedIn: false,
       display: `masonry`,
       backendBaseURL: 'https://dev-resources.herokuapp.com',
       frontendBaseURL: window.location.hostname,
-      userId: 179604866807627777,
+      userProfile: {},
       contribs: [],
       selectedResource: {},
       path: ''
@@ -35,8 +35,10 @@ class App extends Component {
       this.setState({ display: 'tableview' });
     else this.setState({ display: localStorage.getItem('display') });
 
-    if (localStorage.getItem('hoken')) this.setState({ isSignedIn: true });
-    else this.setState({ isSignedIn: false });
+    if (localStorage.getItem('hoken')) {
+        this.setState({ isSignedIn: true, userProfile: JSON.parse(localStorage.getItem('profile')) });
+    }
+    else this.setState({ isSignedIn: false, userProfile: {} });
 
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
@@ -67,6 +69,8 @@ class App extends Component {
   signer = a => {
     if (!a) {
       localStorage.removeItem('hoken');
+      localStorage.removeItem('uid');
+      localStorage.setItem('profile', '');
     }
     this.setState({ isSignedIn: a });
   };
@@ -90,7 +94,8 @@ class App extends Component {
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
       .then(resourceData => {
-        this.setState({ resources: resourceData });
+          console.log(resourceData);
+        this.setState({ resources: resourceData.payload.resources });
       });
   };
 
@@ -104,7 +109,6 @@ class App extends Component {
             onClick={(slug, index) => this.onClick(slug, index)}
             display={this.state.display}
             changeDisplay={opt => this.changeDisplayType(opt)}
-            userId={this.state.userId}
             updateVotes={a => this.updateUpvotes(a)}
           />
         )
