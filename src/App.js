@@ -18,7 +18,6 @@ class App extends Component {
     this.state = {
       resources: [],
       route: '',
-      hoken: '',
       isSignedIn: false,
       display: `masonry`,
       backendBaseURL: 'https://dev-resources.herokuapp.com',
@@ -62,10 +61,6 @@ class App extends Component {
     });
   }
 
-  tokenUpdater = key => {
-    this.setState({ hoken: key });
-  };
-
   signer = a => {
     if (!a) {
       localStorage.removeItem('hoken');
@@ -106,6 +101,7 @@ class App extends Component {
         container: (
           <Home
             resources={this.state.resources}
+            isSignedIn={this.state.isSignedIn}
             onClick={(slug, index) => this.onClick(slug, index)}
             display={this.state.display}
             changeDisplay={opt => this.changeDisplayType(opt)}
@@ -129,7 +125,6 @@ class App extends Component {
         path: 'dashboard',
         container: (
           <Dashboard
-            tokenUpdater={this.tokenUpdater}
             signer={this.signer}
             isSignedIn={this.state.isSignedIn}
           />
