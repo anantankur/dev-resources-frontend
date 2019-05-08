@@ -7,6 +7,7 @@ const user = JSON.parse(localStorage.getItem('profile'));
 
 const Home = ({
   resources,
+  isSignedIn,
   onClick,
   display,
   changeDisplay,
@@ -18,21 +19,27 @@ const Home = ({
   };
 
   const submitUpvote = slug => {
-    fetch(
-      `https://dev-resources.herokuapp.com/resource/${slug}/${user.id}/upvote`,
-      {
-        method: 'post'
-      }
-    )
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error));
+    if (isSignedIn) {
+        fetch(
+          `https://dev-resources.herokuapp.com/resource/${slug}/${user.id}/upvote`,
+          {
+            method: 'post'
+          }
+        )
+          .then(res => res.json())
+          .catch(error => console.error('Error:', error));
 
-    updateVotes();
+        updateVotes();
+    } else  {
+        alert("Action require user account. \n //To be replaced with modal");
+    }
   };
 
-  const hasVoted = upArry => {
-    if (upArry.includes(user.id)) return true;
-    else return false;
+  const hasVoted = (upArry, user) => {
+    if (isSignedIn) {
+        if (upArry.includes(user.id)) return true;
+        else return false;
+    }
   };
 
   return (
@@ -57,7 +64,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, user.id)}
+                hasVoted={hasVoted(res.upvotes, user)}
               />
             );
           else
@@ -68,7 +75,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, user.id)}
+                hasVoted={hasVoted(res.upvotes, user)}
               />
             );
         })}
