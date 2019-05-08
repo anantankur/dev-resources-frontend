@@ -3,7 +3,7 @@ import MasonCards from '../components/cards/masonCards';
 import LayoutOptions from '../components/layoutOptions/layoutOptions';
 import ListCards from '../components/cards/listCards';
 
-const user = JSON.parse(localStorage.getItem('profile'));
+let user = JSON.parse(localStorage.getItem('profile'));
 
 const Home = ({
   resources,
@@ -35,7 +35,7 @@ const Home = ({
     }
   };
 
-  const hasVoted = (upArry, user) => {
+  const hasVoted = (upArry) => {
     if (isSignedIn) {
         if (upArry.includes(user.id)) return true;
         else return false;
@@ -44,6 +44,7 @@ const Home = ({
 
   return (
     <div>
+      {user = JSON.parse(localStorage.getItem('profile'))}
       <div className="speech-bubble" role="alert">
         Heads up! This is still very much a work in progress. Some aspects may
         take a while to load, contain bugs or be completely non functional
@@ -64,7 +65,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, user)}
+                hasVoted={hasVoted(res.upvotes)}
               />
             );
           else
@@ -75,7 +76,7 @@ const Home = ({
                 resource={res}
                 onClick={onClick}
                 upvote={() => submitUpvote(res.slug)}
-                hasVoted={hasVoted(res.upvotes, user)}
+                hasVoted={hasVoted(res.upvotes)}
               />
             );
         })}
