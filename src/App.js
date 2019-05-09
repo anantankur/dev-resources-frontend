@@ -65,7 +65,8 @@ class App extends Component {
     if (!a) {
       localStorage.removeItem('hoken');
       localStorage.removeItem('uid');
-      localStorage.setItem('profile', '');
+      // localStorage.setItem('profile', JSON.stringify({}));
+      localStorage.removeItem('profile');
     }
     this.setState({ isSignedIn: a });
   };
@@ -89,8 +90,7 @@ class App extends Component {
     fetch(`${this.state.backendBaseURL}/resource/all`)
       .then(response => response.json())
       .then(resourceData => {
-          console.log(resourceData);
-        this.setState({ resources: resourceData.payload.resources });
+          this.setState({ resources: resourceData.payload.resources })
       });
   };
 
