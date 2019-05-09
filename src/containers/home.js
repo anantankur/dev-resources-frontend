@@ -18,24 +18,30 @@ const Home = ({
     masonry: 'card-columns px-5 mt-3'
   };
 
-  const submitUpvote = slug => {
+  const submitUpvote = slugData => {
+    let localHasVoted = hasVoted(slugData.upvotes);
+    console.log('reeeeeeeeeeeeeeeeeeee', localHasVoted);
     if (isSignedIn) {
         fetch(
-          `https://dev-resources.herokuapp.com/resource/${slug}/${user.id}/upvote`,
+          `https://dev-resources.herokuapp.com/resource/${slugData.slug}/${user.id}/upvote`,
           {
-            method: 'post'
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ isUpvote: !localHasVoted })
           }
         )
           .then(res => res.json())
+          .then(async () => await updateVotes())
           .catch(error => console.error('Error:', error));
 
-        updateVotes();
+        // updateVotes();
     } else  {
         alert("Action require user account. \n //To be replaced with modal");
     }
   };
 
   const hasVoted = (upArry) => {
+    user = JSON.parse(localStorage.getItem('profile'));
     if (isSignedIn) {
         if (upArry.includes(user.id)) return true;
         else return false;
@@ -44,7 +50,6 @@ const Home = ({
 
   return (
     <div>
-      {user = JSON.parse(localStorage.getItem('profile'))}
       <div className="speech-bubble" role="alert">
         Heads up! This is still very much a work in progress. Some aspects may
         take a while to load, contain bugs or be completely non functional
@@ -64,7 +69,7 @@ const Home = ({
                 index={i}
                 resource={res}
                 onClick={onClick}
-                upvote={() => submitUpvote(res.slug)}
+                upvote={() => submitUpvote(res)}
                 hasVoted={hasVoted(res.upvotes)}
               />
             );
@@ -75,7 +80,7 @@ const Home = ({
                 index={i}
                 resource={res}
                 onClick={onClick}
-                upvote={() => submitUpvote(res.slug)}
+                upvote={() => submitUpvote(res)}
                 hasVoted={hasVoted(res.upvotes)}
               />
             );
