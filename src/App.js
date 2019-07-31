@@ -19,8 +19,9 @@ class App extends Component {
       resources: [],
       route: '',
       isSignedIn: false,
+      isTokenVerified: false,
       display: `masonry`,
-      backendBaseURL: 'https://dev-resources.herokuapp.com',
+      backendBaseURL: 'http://localhost:3001',
       frontendBaseURL: window.location.hostname,
       userProfile: {},
       contribs: [],
@@ -34,7 +35,7 @@ class App extends Component {
       this.setState({ display: 'tableview' });
     else this.setState({ display: localStorage.getItem('display') });
 
-    if (localStorage.getItem('hoken')) {
+    if (localStorage.getItem('hoken') && !(this.state.isTokenVerified)) {
         this.setState({ isSignedIn: true, userProfile: JSON.parse(localStorage.getItem('profile')) });
     }
     else this.setState({ isSignedIn: false, userProfile: {} });

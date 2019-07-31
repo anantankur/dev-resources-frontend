@@ -9,7 +9,7 @@ if(key == null) {
 } else {
     localStorage.setItem("hoken", key);
     localStorage.setItem("uid", uid);
-    window.location.href = "https://rustyresources.herokuapp.com/dashboard"
+    window.location.href = "http://localhost:3000/dashboard"
 }
 
 class Dashboard extends Component {
@@ -23,7 +23,7 @@ class Dashboard extends Component {
     componentDidMount() {
 
         if (this.props.isSignedIn) {
-            fetch('https://dev-resources.herokuapp.com/profile', {
+            fetch('http://localhost:3001/profile', {
                   method: 'post',
                   headers: {'Content-Type': 'application/json'},
                   body: JSON.stringify({
@@ -74,7 +74,7 @@ class Dashboard extends Component {
                                 <h1 className="text-white text-center mt-3">User Page</h1>
                                 <p className="text-white text-center">This page will eventually contain your favourite/bookmarked resources and various user options, if you logged in by authenticating with Discord</p>
                                 <p >
-                                    <a className="btn btn-outline-warning" href='https://discordapp.com/api/oauth2/authorize?client_id=537744904940683277&redirect_uri=https://dev-resources.herokuapp.com/user/auth/discord/callback&response_type=code&scope=identify%20guilds'>login</a>
+                                    <a className="btn btn-outline-warning" href='https://discordapp.com/api/oauth2/authorize?client_id=520955050793893891&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fuser%2Fauth%2Fdiscord%2Fcallback&response_type=code&scope=identify%20guilds'>login</a>
                                 </p>
                             </div>
                 }
